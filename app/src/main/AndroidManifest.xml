@@ -11,6 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SundoAppV04">
         <activity
+            android:name=".HomeStudent"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterDriver"
+            android:exported="false" />
+        <activity
             android:name=".DriverRegister"
             android:exported="false" />
         <activity
@@ -20,10 +26,10 @@
             android:name=".ForgotPassword"
             android:exported="false" />
         <activity
-            android:name=".Register"
+            android:name=".RegisterStudent"
             android:exported="false" />
         <activity
-            android:name=".SecondActivity"
+            android:name=".HomeDriver"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

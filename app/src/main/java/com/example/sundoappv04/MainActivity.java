@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //if last user has logged in and verified, auto-sign in will trigger
         if((currentUser != null) && (mAuth.getCurrentUser().isEmailVerified())) {
-            Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
+            Intent intent = new Intent(getApplicationContext(), HomeDriver.class);
             startActivity((intent));
             finish();
         }
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Register.class);
+                Intent intent = new Intent(getApplicationContext(), RegisterMain.class);
                 startActivity(intent);
                 finish();
             }
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     if(mAuth.getCurrentUser().isEmailVerified()){
                                         Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
+                                        Intent intent = new Intent(getApplicationContext(), HomeDriver.class);
                                         startActivity((intent));
                                         finish();
                                     } else {
@@ -170,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
     void navigateToSecondActivity() {
         finish();
-        Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+        Intent intent = new Intent(MainActivity.this, HomeDriver.class);
         startActivity(intent);
     }
 }

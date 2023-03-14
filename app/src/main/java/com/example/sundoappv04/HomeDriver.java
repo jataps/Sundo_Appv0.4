@@ -1,6 +1,5 @@
 package com.example.sundoappv04;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,7 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SecondActivity extends AppCompatActivity {
+public class HomeDriver extends AppCompatActivity {
 
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
@@ -32,7 +31,7 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.activity_home_driver);
 
         name = findViewById(R.id.name);
         email = findViewById(R.id.email);
@@ -88,7 +87,7 @@ public class SecondActivity extends AppCompatActivity {
             @Override
             public void onComplete(Task<Void> task) {
                 finish();
-                startActivity(new Intent(SecondActivity.this, MainActivity.class));
+                startActivity(new Intent(HomeDriver.this, MainActivity.class));
             }
         });
 

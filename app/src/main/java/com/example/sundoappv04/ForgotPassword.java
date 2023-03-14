@@ -23,7 +23,6 @@ public class ForgotPassword extends AppCompatActivity {
     ProgressBar progressBar;
     FirebaseAuth mAuth;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

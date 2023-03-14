@@ -1,14 +1,11 @@
 package com.example.sundoappv04;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -22,8 +19,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class Register extends AppCompatActivity {
+public class RegisterStudent extends AppCompatActivity {
 
     TextInputEditText editTextEmail, editTextPassword;
     TextView haveAccount;
@@ -31,21 +30,12 @@ public class Register extends AppCompatActivity {
     FirebaseAuth mAuth;
     ProgressBar progressBar;
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
-            startActivity((intent));
-            finish();
-        }
-    }
+    DatabaseReference dbRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sundo-app-44703-default-rtdb.firebaseio.com/");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register_student);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -101,7 +91,7 @@ public class Register extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
-                                
+
                                 if (task.isSuccessful()) {
 
                                     //send verification code
@@ -109,13 +99,20 @@ public class Register extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Toast.makeText(Register.this, "User registered successfully. Please verify your email id.",
+                                                Toast.makeText(RegisterStudent.this, "User registered successfully. Please verify your email id.",
                                                         Toast.LENGTH_SHORT).show();
+
+                                                String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                                                //USER UID store in realtime database
+                                                dbRef.child("users").child("student").child(currentUser).child("email").setValue(email);
+                                                dbRef.child("users").child("student").child(currentUser).child("password").setValue(password);
+
                                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                                 startActivity((intent));
                                                 finish();
                                             } else {
-                                                Toast.makeText(Register.this, task.getException().getMessage(),
+                                                Toast.makeText(RegisterStudent.this, task.getException().getMessage(),
                                                         Toast.LENGTH_SHORT).show();
                                             }
                                         }
@@ -123,7 +120,7 @@ public class Register extends AppCompatActivity {
 
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Toast.makeText(Register.this, task.getException().getMessage(),
+                                    Toast.makeText(RegisterStudent.this, task.getException().getMessage(),
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
