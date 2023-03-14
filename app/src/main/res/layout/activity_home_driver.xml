@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome"
+        android:id="@+id/uidText"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
         android:textSize="34sp" />
@@ -18,7 +19,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/name"
+        android:id="@+id/nameDriver"
         android:text="name"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
@@ -28,19 +29,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/email"
+        android:id="@+id/emailDriver"
         android:text="email"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_below="@id/name"
+        android:layout_below="@id/nameDriver"
         android:textSize="24sp" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign Out"
-        android:id="@+id/signOutBtn"
+        android:id="@+id/signOutBtnDriver"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"

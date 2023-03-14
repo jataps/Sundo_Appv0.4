@@ -23,33 +23,27 @@ import com.google.firebase.database.ValueEventListener;
 
 public class HomeStudent extends AppCompatActivity {
 
-    TextView studentName, studentEmail;
-    MaterialButton signOutStudentBtn;
+    TextView studentName, studentEmail, uidText;
+    MaterialButton signOutBtnStudent;
     FirebaseAuth mAuth;
-    DatabaseReference dbRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sundo-app-44703-default-rtdb.firebaseio.com/");
-
-    String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        dbRef.child("users").child("student").child(currentUser).child("status").setValue("ONLINE");
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_home);
 
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sundo-app-44703-default-rtdb.firebaseio.com/");
+
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         mAuth = FirebaseAuth.getInstance();
 
         studentName = findViewById(R.id.nameStudent);
         studentEmail = findViewById(R.id.emailStudent);
-        signOutStudentBtn = findViewById(R.id.signOutStudentBtn);
+        signOutBtnStudent = findViewById(R.id.signOutBtnStudent);
+        uidText =findViewById(R.id.uidText);
 
-        dbRef.child("users").child("student").child(currentUser).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        dbRef.child("users").child(currentUser).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
 
@@ -58,12 +52,16 @@ public class HomeStudent extends AppCompatActivity {
                     //if current user does exist we read its content here users > student > UID <- start here
                     if (task.getResult().exists()) {
 
+                        dbRef.child("users").child(currentUser).child("status").setValue("online");
+
                         DataSnapshot dataSnapshot = task.getResult();
                         String email = String.valueOf(dataSnapshot.child("email").getValue());
-                        String password = String.valueOf(dataSnapshot.child("password").getValue());
+                        String userType = String.valueOf(dataSnapshot.child("userType").getValue());
+                        String uid = String.valueOf(dataSnapshot.child("uid").getValue()); //test textview
 
                         studentEmail.setText(email);
-                        studentName.setText(password);
+                        studentName.setText(userType);
+                        uidText.setText(uid); //test textview
 
                     }
 
@@ -74,9 +72,11 @@ public class HomeStudent extends AppCompatActivity {
             }
         });
 
-        signOutStudentBtn.setOnClickListener(new View.OnClickListener() {
+        signOutBtnStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dbRef.child("users").child(currentUser).child("status").setValue("offline");
+
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(intent);

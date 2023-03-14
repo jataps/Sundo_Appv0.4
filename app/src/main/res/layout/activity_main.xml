@@ -110,16 +110,4 @@
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="20dp"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/google_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
-        android:backgroundTint="@color/design_default_color_secondary"
-        android:drawableLeft="@drawable/google_logov24"
-        android:drawablePadding="20dp"
-        android:text="Sign in with Google" />
-
 </RelativeLayout>

@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 public class RegisterDriver extends AppCompatActivity {
 
@@ -103,9 +104,14 @@ public class RegisterDriver extends AppCompatActivity {
 
                                                 String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+                                                Query dbQuery = dbRef.child("users").child(currentUser);
+
                                                 //user id store in realtime database
-                                                dbRef.child("users").child("driver").child(currentUser).child("email").setValue(email);
-                                                dbRef.child("users").child("driver").child(currentUser).child("password").setValue(password);
+                                                dbRef.child("users").child(currentUser).child("email").setValue(email);
+                                                dbRef.child("users").child(currentUser).child("passOptional").setValue(password);
+                                                dbRef.child("users").child(currentUser).child("uid").setValue(currentUser);
+                                                dbRef.child("users").child(currentUser).child("userType").setValue("driver");
+                                                dbRef.child("users").child(currentUser).child("status").setValue("offline");
 
                                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                                 startActivity((intent));

@@ -24,6 +24,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,15 +57,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this, gso);
-
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if(acct != null) {
-            //navigateToSecondActivity();
-        }
-
-        googleBtn = findViewById(R.id.google_btn);
         registerBtn = findViewById(R.id.registerbtn);
         loginBtn = findViewById(R.id.loginbtn);
         editTextEmail = findViewById(R.id.username);
@@ -109,10 +104,39 @@ public class MainActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
 
                                     if(mAuth.getCurrentUser().isEmailVerified()){
-                                        Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getApplicationContext(), HomeDriver.class);
-                                        startActivity((intent));
-                                        finish();
+
+                                        String uid = task.getResult().getUser().getUid();
+
+                                        FirebaseDatabase fireDb = FirebaseDatabase.getInstance();
+                                        fireDb.getReference().child("users").child(uid).child("userType").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                String userType = String.valueOf(snapshot.getValue());
+
+                                                switch (userType) {
+                                                    case "driver":
+                                                        Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                                                        Intent driverIntent = new Intent(getApplicationContext(), HomeDriver.class);
+                                                        startActivity(driverIntent);
+                                                        finish();
+                                                        break;
+
+                                                    case "student":
+                                                        Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                                                        Intent studentIntent = new Intent(getApplicationContext(), HomeStudent.class);
+                                                        startActivity(studentIntent);
+                                                        finish();
+                                                        break;
+                                                }
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
                                     } else {
                                         Toast.makeText(getApplicationContext(), "Please verify your email.", Toast.LENGTH_SHORT).show();
                                     }
@@ -136,38 +160,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        googleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn();
-            }
-        });
     }
 
-    void signIn() {
-        Intent signInIntent = gsc.getSignInIntent();
-        startActivityForResult(signInIntent, 1000);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1000) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
-            try {
-                task.getResult(ApiException.class);
-                navigateToSecondActivity();
-            } catch (ApiException e) {
-                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-    }
-
-    void navigateToSecondActivity() {
-        finish();
-        Intent intent = new Intent(MainActivity.this, HomeDriver.class);
-        startActivity(intent);
-    }
 }
