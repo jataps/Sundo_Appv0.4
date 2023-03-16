@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".HomeStudent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/uidText"
+        android:text="Complete Registration"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="34sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nameStudent"
+        android:text="name"
+        android:layout_below="@id/uidText"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:textSize="34sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/emailStudent"
+        android:text="email"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/nameStudent"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/emailStudent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_below="@id/emailStudent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/nameFContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/studFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#30ffffff"
+                        android:drawablePadding="20dp"
+                        android:hint="Enter first name"
+                        android:padding="20dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/nameLContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/nameFContainer">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/studLastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#30ffffff"
+                        android:drawablePadding="20dp"
+                        android:hint="Enter last name"
+                        android:padding="20dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/nameMContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/nameLContainer">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/studMiddleName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#30ffffff"
+                        android:drawablePadding="20dp"
+                        android:hint="Enter middle initial"
+                        android:padding="20dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/provinceContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/nameMContainer">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/studProvince"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#30ffffff"
+                        android:drawablePadding="20dp"
+                        android:hint="Enter province"
+                        android:padding="20dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/cityContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/provinceContainer">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/studCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#30ffffff"
+                        android:drawablePadding="20dp"
+                        android:hint="Enter city"
+                        android:padding="20dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/brgyContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cityContainer">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/studBrgy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#30ffffff"
+                        android:drawablePadding="20dp"
+                        android:hint="Enter barangay"
+                        android:padding="20dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/addNoteContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/brgyContainer">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/studAddNote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#30ffffff"
+                        android:drawablePadding="20dp"
+                        android:hint="Enter address note"
+                        android:padding="20dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:layout_below="@id/addNoteContainer"
+                    android:text="Submit"
+                    android:id="@+id/submitBtnStudent"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_centerHorizontal="true"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="Sign Out"
+            android:id="@+id/signOutBtnStudent"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

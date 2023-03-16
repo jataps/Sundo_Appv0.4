@@ -18,7 +18,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -48,7 +47,7 @@ public class RegisterStudent extends AppCompatActivity {
         haveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LogIn.class);
                 startActivity(intent);
                 finish();
             }
@@ -111,8 +110,8 @@ public class RegisterStudent extends AppCompatActivity {
                                                 dbRef.child("users").child(currentUser).child("userType").setValue("student");
                                                 dbRef.child("users").child(currentUser).child("status").setValue("offline");
 
-                                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                startActivity((intent));
+                                                Intent intent = new Intent(getApplicationContext(), LogIn.class);
+                                                startActivity(intent);
                                                 finish();
                                             } else {
                                                 Toast.makeText(RegisterStudent.this, task.getException().getMessage(),

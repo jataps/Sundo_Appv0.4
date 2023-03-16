@@ -18,7 +18,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -48,7 +47,7 @@ public class RegisterDriver extends AppCompatActivity {
         haveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LogIn.class);
                 startActivity(intent);
                 finish();
             }
@@ -104,8 +103,6 @@ public class RegisterDriver extends AppCompatActivity {
 
                                                 String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                                                Query dbQuery = dbRef.child("users").child(currentUser);
-
                                                 //user id store in realtime database
                                                 dbRef.child("users").child(currentUser).child("email").setValue(email);
                                                 dbRef.child("users").child(currentUser).child("passOptional").setValue(password);
@@ -113,7 +110,7 @@ public class RegisterDriver extends AppCompatActivity {
                                                 dbRef.child("users").child(currentUser).child("userType").setValue("driver");
                                                 dbRef.child("users").child(currentUser).child("status").setValue("offline");
 
-                                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                                Intent intent = new Intent(getApplicationContext(), LogIn.class);
                                                 startActivity((intent));
                                                 finish();
                                             } else {

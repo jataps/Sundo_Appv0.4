@@ -1,9 +1,10 @@
 package com.example.sundoappv04;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,11 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -29,25 +27,26 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity {
+public class LogIn extends AppCompatActivity {
 
-    GoogleSignInOptions gso;
-    GoogleSignInClient gsc;
-    MaterialButton googleBtn, registerBtn, loginBtn;
+    MaterialButton registerBtn, loginBtn;
     TextInputEditText editTextEmail, editTextPassword;
     TextView forgotPass;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
+    FirebaseDatabase fireDb = FirebaseDatabase.getInstance();
 
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
         //if last user has logged in and verified, auto-sign in will trigger
         if((currentUser != null) && (mAuth.getCurrentUser().isEmailVerified())) {
-            Intent intent = new Intent(getApplicationContext(), HomeDriver.class);
-            startActivity((intent));
-            finish();
+
+            String uid = mAuth.getCurrentUser().getUid();
+
+            filterType(uid);
         }
 
     }
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_log_in);
 
         registerBtn = findViewById(R.id.registerbtn);
         loginBtn = findViewById(R.id.loginbtn);
@@ -71,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RegisterMain.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -106,36 +104,7 @@ public class MainActivity extends AppCompatActivity {
                                     if(mAuth.getCurrentUser().isEmailVerified()){
 
                                         String uid = task.getResult().getUser().getUid();
-
-                                        FirebaseDatabase fireDb = FirebaseDatabase.getInstance();
-                                        fireDb.getReference().child("users").child(uid).child("userType").addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                String userType = String.valueOf(snapshot.getValue());
-
-                                                switch (userType) {
-                                                    case "driver":
-                                                        Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                                        Intent driverIntent = new Intent(getApplicationContext(), HomeDriver.class);
-                                                        startActivity(driverIntent);
-                                                        finish();
-                                                        break;
-
-                                                    case "student":
-                                                        Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                                                        Intent studentIntent = new Intent(getApplicationContext(), HomeStudent.class);
-                                                        startActivity(studentIntent);
-                                                        finish();
-                                                        break;
-                                                }
-
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-
-                                            }
-                                        });
+                                        filterType(uid);
 
                                     } else {
                                         Toast.makeText(getApplicationContext(), "Please verify your email.", Toast.LENGTH_SHORT).show();
@@ -143,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Toast.makeText(MainActivity.this, task.getException().getMessage(),
+                                    Toast.makeText(LogIn.this, task.getException().getMessage(),
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -156,11 +125,52 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ForgotPassword.class);
                 startActivity(intent);
-                finish();
             }
         });
 
     }
 
+    void filterType (String uid) {
+        fireDb.getReference().child("users").child(uid).child("userType").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                String userType = String.valueOf(snapshot.getValue());
+
+                switch (userType) {
+                    case "driver":
+                        Intent driverIntent = new Intent(getApplicationContext(), HomeDriver.class);
+                        startActivity(driverIntent);
+                        finish();
+                        break;
+
+                    case "student":
+                        Intent studentIntent = new Intent(getApplicationContext(), HomeStudent.class);
+                        startActivity(studentIntent);
+                        finish();
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        LogIn.super.onBackPressed();
+                    }
+                }).create().show();
+    }
 }

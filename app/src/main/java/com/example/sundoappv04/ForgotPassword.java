@@ -75,7 +75,7 @@ public class ForgotPassword extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 backBtn.setVisibility(View.GONE);
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LogIn.class);
                 startActivity((intent));
                 finish();
             }

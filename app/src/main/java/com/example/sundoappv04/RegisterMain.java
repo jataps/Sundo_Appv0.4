@@ -24,7 +24,6 @@ public class RegisterMain extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RegisterDriver.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -33,7 +32,6 @@ public class RegisterMain extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RegisterStudent.class);
                 startActivity(intent);
-                finish();
             }
         });
 
