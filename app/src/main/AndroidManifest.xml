@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SundoAppV04">
         <activity
-            android:name=".HomeStudent"
+            android:name=".FillUpForm"
             android:exported="false" />
         <activity
             android:name=".RegisterDriver"

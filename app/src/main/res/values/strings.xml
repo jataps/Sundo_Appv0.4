@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">Sundo App v0.4</string>
+
+
+    <string-array name="array_provinces">
+        <item>Select your province</item>
+        <item>Rizal</item>
+    </string-array>
+
+
+    <string-array name="array_default_cities">
+        <item>Select your city</item>
+    </string-array>
+
+    <string-array name="array_rizal_cities">
+        <item>Select your city</item>
+        <item>Angono</item>
+
+    </string-array>
+
+
+    <string-array name="array_default_barangays">
+        <item>Select your barangay</item>
+    </string-array>
+
+    <string-array name="array_angono_barangays">
+        <item>Select your barangay</item>
+        <item>San Isidro</item>
+    </string-array>
+
 </resources>
