@@ -4,96 +4,11 @@
 
     <string-array name="array_provinces">
         <item>Select your province</item>
-        <item>ABRA</item>
-        <item>AGUSAN DEL NORTE</item>
-        <item>AGUSAN DEL SUR</item>
-        <item>AKLAN</item>
-        <item>ALBAY</item>
-        <item>ANTIQUE</item>
-        <item>APAYAO</item>
-        <item>AURORA</item>
-        <item>BASILAN</item>
-        <item>BATAAN</item>
-        <item>BATANES</item>
-        <item>BATANGAS</item>
-        <item>BENGUET</item>
-        <item>BILIRAN</item>
-        <item>BOHOL</item>
-        <item>BUKIDNON</item>
-        <item>BULACAN</item>
-        <item>CAGAYAN</item>
-        <item>CAMARINES NORTE</item>
-        <item>CAMARINES SUR</item>
-        <item>CAMIGUIN</item>
-        <item>CAPIZ</item>
-        <item>CATANDUANES</item>
         <item>CAVITE</item>
-        <item>CEBU</item>
-        <item>CITY OF ISABELA</item>
-        <item>CITY OF MANILA</item>
-        <item>COMPOSTELA VALLEY</item>
-        <item>COTABATO (NORTH COTABATO)</item>
-        <item>COTABATO CITY</item>
-        <item>DAVAO DEL NORTE</item>
-        <item>DAVAO DEL SUR</item>
-        <item>DAVAO OCCIDENTAL</item>
-        <item>DAVAO ORIENTAL</item>
-        <item>DINAGAT ISLANDS</item>
-        <item>EASTERN SAMAR</item>
-        <item>GUIMARAS</item>
-        <item>IFUGAO</item>
-        <item>ILOCOS NORTE</item>
-        <item>ILOCOS SUR</item>
-        <item>ILOILO</item>
-        <item>ISABELA</item>
-        <item>KALINGA</item>
-        <item>LA UNION</item>
         <item>LAGUNA</item>
-        <item>LANAO DEL NORTE</item>
-        <item>LANAO DEL SUR</item>
-        <item>LEYTE</item>
-        <item>MAGUINDANAO</item>
-        <item>MARINDUQUE</item>
-        <item>MASBATE</item>
-        <item>MISAMIS OCCIDENTAL</item>
-        <item>MISAMIS ORIENTAL</item>
-        <item>MOUNTAIN PROVINCE</item>
-        <item>NCR, CITY OF MANILA, FIRST DISTRICT</item>
-        <item>NCR, FOURTH DISTRICT</item>
-        <item>NCR, SECOND DISTRICT</item>
-        <item>NCR, THIRD DISTRICT</item>
-        <item>NEGROS OCCIDENTAL</item>
-        <item>NEGROS ORIENTAL</item>
-        <item>NORTHERN SAMAR</item>
-        <item>NUEVA ECIJA</item>
-        <item>NUEVA VIZCAYA</item>
-        <item>OCCIDENTAL MINDORO</item>
-        <item>ORIENTAL MINDORO</item>
-        <item>PALAWAN</item>
-        <item>PAMPANGA</item>
-        <item>PANGASINAN</item>
-        <item>QUEZON</item>
-        <item>QUIRINO</item>
+        <item>METRO MANILA</item>
         <item>RIZAL</item>
-        <item>ROMBLON</item>
-        <item>SAMAR (WESTERN SAMAR)</item>
-        <item>SARANGANI</item>
-        <item>SIQUIJOR</item>
-        <item>SORSOGON</item>
-        <item>SOUTH COTABATO</item>
-        <item>SOUTHERN LEYTE</item>
-        <item>SULTAN KUDARAT</item>
-        <item>SULU</item>
-        <item>SURIGAO DEL NORTE</item>
-        <item>SURIGAO DEL SUR</item>
-        <item>TARLAC</item>
-        <item>TAWI-TAWI</item>
-        <item>ZAMBALES</item>
-        <item>ZAMBOANGA DEL NORTE</item>
-        <item>ZAMBOANGA DEL SUR</item>
-        <item>ZAMBOANGA SIBUGAY</item>
     </string-array>
-
 
     <string-array name="array_default_cities">
         <item>Select your city</item>
@@ -250,7 +165,7 @@
         <item>PATEROS</item>
         <item>TAGUIG CITY</item>
     </string-array>
-    
+
     <string-array name="array_default_barangays">
         <item>Select your barangay</item>
     </string-array>

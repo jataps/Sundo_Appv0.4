@@ -74,7 +74,16 @@ public class FillUpForm extends AppCompatActivity {
                         case "Select your province": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_default_cities, R.layout.spinner_layout);
                             break;
 
-                        case "Rizal": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_rizal_cities, R.layout.spinner_layout);
+                        case "RIZAL": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_rizal_cities, R.layout.spinner_layout);
+                            break;
+
+                        case "CAVITE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_cavite_cities, R.layout.spinner_layout);
+                            break;
+
+                        case "LAGUNA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_laguna_cities, R.layout.spinner_layout);
+                            break;
+
+                        case "METRO MANILA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_metro_manila_cities, R.layout.spinner_layout);
                             break;
 
                         default: break;
