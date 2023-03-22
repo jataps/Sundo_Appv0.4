@@ -4,7 +4,94 @@
 
     <string-array name="array_provinces">
         <item>Select your province</item>
-        <item>Rizal</item>
+        <item>ABRA</item>
+        <item>AGUSAN DEL NORTE</item>
+        <item>AGUSAN DEL SUR</item>
+        <item>AKLAN</item>
+        <item>ALBAY</item>
+        <item>ANTIQUE</item>
+        <item>APAYAO</item>
+        <item>AURORA</item>
+        <item>BASILAN</item>
+        <item>BATAAN</item>
+        <item>BATANES</item>
+        <item>BATANGAS</item>
+        <item>BENGUET</item>
+        <item>BILIRAN</item>
+        <item>BOHOL</item>
+        <item>BUKIDNON</item>
+        <item>BULACAN</item>
+        <item>CAGAYAN</item>
+        <item>CAMARINES NORTE</item>
+        <item>CAMARINES SUR</item>
+        <item>CAMIGUIN</item>
+        <item>CAPIZ</item>
+        <item>CATANDUANES</item>
+        <item>CAVITE</item>
+        <item>CEBU</item>
+        <item>CITY OF ISABELA</item>
+        <item>CITY OF MANILA</item>
+        <item>COMPOSTELA VALLEY</item>
+        <item>COTABATO (NORTH COTABATO)</item>
+        <item>COTABATO CITY</item>
+        <item>DAVAO DEL NORTE</item>
+        <item>DAVAO DEL SUR</item>
+        <item>DAVAO OCCIDENTAL</item>
+        <item>DAVAO ORIENTAL</item>
+        <item>DINAGAT ISLANDS</item>
+        <item>EASTERN SAMAR</item>
+        <item>GUIMARAS</item>
+        <item>IFUGAO</item>
+        <item>ILOCOS NORTE</item>
+        <item>ILOCOS SUR</item>
+        <item>ILOILO</item>
+        <item>ISABELA</item>
+        <item>KALINGA</item>
+        <item>LA UNION</item>
+        <item>LAGUNA</item>
+        <item>LANAO DEL NORTE</item>
+        <item>LANAO DEL SUR</item>
+        <item>LEYTE</item>
+        <item>MAGUINDANAO</item>
+        <item>MARINDUQUE</item>
+        <item>MASBATE</item>
+        <item>MISAMIS OCCIDENTAL</item>
+        <item>MISAMIS ORIENTAL</item>
+        <item>MOUNTAIN PROVINCE</item>
+        <item>NCR, CITY OF MANILA, FIRST DISTRICT</item>
+        <item>NCR, FOURTH DISTRICT</item>
+        <item>NCR, SECOND DISTRICT</item>
+        <item>NCR, THIRD DISTRICT</item>
+        <item>NEGROS OCCIDENTAL</item>
+        <item>NEGROS ORIENTAL</item>
+        <item>NORTHERN SAMAR</item>
+        <item>NUEVA ECIJA</item>
+        <item>NUEVA VIZCAYA</item>
+        <item>OCCIDENTAL MINDORO</item>
+        <item>ORIENTAL MINDORO</item>
+        <item>PALAWAN</item>
+        <item>PAMPANGA</item>
+        <item>PANGASINAN</item>
+        <item>QUEZON</item>
+        <item>QUIRINO</item>
+        <item>RIZAL</item>
+        <item>ROMBLON</item>
+        <item>SAMAR (WESTERN SAMAR)</item>
+        <item>SARANGANI</item>
+        <item>SIQUIJOR</item>
+        <item>SORSOGON</item>
+        <item>SOUTH COTABATO</item>
+        <item>SOUTHERN LEYTE</item>
+        <item>SULTAN KUDARAT</item>
+        <item>SULU</item>
+        <item>SURIGAO DEL NORTE</item>
+        <item>SURIGAO DEL SUR</item>
+        <item>TARLAC</item>
+        <item>TAWI-TAWI</item>
+        <item>ZAMBALES</item>
+        <item>ZAMBOANGA DEL NORTE</item>
+        <item>ZAMBOANGA DEL SUR</item>
+        <item>ZAMBOANGA SIBUGAY</item>
     </string-array>
 
 
@@ -12,13 +99,158 @@
         <item>Select your city</item>
     </string-array>
 
+    <string-array name="array_batangas_cities">
+        <item>Select your city</item><item>AGONCILLO</item>
+        <item>ALITAGTAG</item>
+        <item>BALAYAN</item>
+        <item>BALETE</item>
+        <item>BATANGAS CITY (Capital)</item>
+        <item>BAUAN</item>
+        <item>CALACA</item>
+        <item>CALATAGAN</item>
+        <item>CUENCA</item>
+        <item>IBAAN</item>
+        <item>LAUREL</item>
+        <item>LEMERY</item>
+        <item>LIAN</item>
+        <item>LIPA CITY</item>
+        <item>LOBO</item>
+        <item>MABINI</item>
+        <item>MALVAR</item>
+        <item>MATAASNAKAHOY</item>
+        <item>NASUGBU</item>
+        <item>PADRE GARCIA</item>
+        <item>ROSARIO</item>
+        <item>SAN JOSE</item>
+        <item>SAN JUAN</item>
+        <item>SAN LUIS</item>
+        <item>SAN NICOLAS</item>
+        <item>SAN PASCUAL</item>
+        <item>SANTA TERESITA</item>
+        <item>SANTO TOMAS</item>
+        <item>TAAL</item>
+        <item>TALISAY</item>
+        <item>CITY OF TANAUAN</item>
+        <item>TAYSAN</item>
+        <item>TINGLOY</item>
+        <item>TUY</item>
+
+    </string-array>
+    
+    <string-array name="array_cavite_cities">
+        <item>Select your city</item>
+        <item>ALFONSO</item>
+        <item>AMADEO</item>
+        <item>BACOOR CITY</item>
+        <item>CARMONA</item>
+        <item>CAVITE CITY</item>
+        <item>CITY OF DASMARIÑAS</item>
+        <item>GENERAL EMILIO AGUINALDO</item>
+        <item>GENERAL TRIAS</item>
+        <item>IMUS CITY</item>
+        <item>INDANG</item>
+        <item>KAWIT</item>
+        <item>MAGALLANES</item>
+        <item>MARAGONDON</item>
+        <item>MENDEZ (MENDEZ-NUÑEZ)</item>
+        <item>NAIC</item>
+        <item>NOVELETA</item>
+        <item>ROSARIO</item>
+        <item>SILANG</item>
+        <item>TAGAYTAY CITY</item>
+        <item>TANZA</item>
+        <item>TERNATE</item>
+        <item>TRECE MARTIRES CITY (Capital)</item>
+        <item>GEN. MARIANO ALVAREZ</item>
+
+    </string-array>
+    
+    <string-array name="array_laguna_cities">
+        <item>Select your city</item>
+        <item>ALAMINOS</item>
+        <item>BAY</item>
+        <item>CITY OF BIÑAN</item>
+        <item>CABUYAO CITY</item>
+        <item>CITY OF CALAMBA</item>
+        <item>CALAUAN</item>
+        <item>CAVINTI</item>
+        <item>FAMY</item>
+        <item>KALAYAAN</item>
+        <item>LILIW</item>
+        <item>LOS BAÑOS</item>
+        <item>LUISIANA</item>
+        <item>LUMBAN</item>
+        <item>MABITAC</item>
+        <item>MAGDALENA</item>
+        <item>MAJAYJAY</item>
+        <item>NAGCARLAN</item>
+        <item>PAETE</item>
+        <item>PAGSANJAN</item>
+        <item>PAKIL</item>
+        <item>PANGIL</item>
+        <item>PILA</item>
+        <item>RIZAL</item>
+        <item>SAN PABLO CITY</item>
+        <item>CITY OF SAN PEDRO</item>
+        <item>SANTA CRUZ (Capital)</item>
+        <item>SANTA MARIA</item>
+        <item>CITY OF SANTA ROSA</item>
+        <item>SINILOAN</item>
+        <item>VICTORIA</item>
+    </string-array>
+
     <string-array name="array_rizal_cities">
         <item>Select your city</item>
-        <item>Angono</item>
+        <item>ANGONO</item>
+        <item>CITY OF ANTIPOLO</item>
+        <item>BARAS</item>
+        <item>BINANGONAN</item>
+        <item>CAINTA</item>
+        <item>CARDONA</item>
+        <item>JALA-JALA</item>
+        <item>RODRIGUEZ (MONTALBAN)</item>
+        <item>MORONG</item>
+        <item>PILILLA</item>
+        <item>SAN MATEO</item>
+        <item>TANAY</item>
+        <item>TAYTAY</item>
+        <item>TERESA</item>
 
     </string-array>
 
-
+    <string-array name="array_metro_manila_cities">
+        <item>Select your city</item>
+        <item>TONDO I / II</item>
+        <item>BINONDO</item>
+        <item>QUIAPO</item>
+        <item>SAN NICOLAS</item>
+        <item>SANTA CRUZ</item>
+        <item>SAMPALOC</item>
+        <item>SAN MIGUEL</item>
+        <item>ERMITA</item>
+        <item>INTRAMUROS</item>
+        <item>MALATE</item>
+        <item>PACO</item>
+        <item>PANDACAN</item>
+        <item>PORT AREA</item>
+        <item>SANTA ANA</item>
+        <item>CITY OF MARIKINA</item>
+        <item>CITY OF PASIG</item>
+        <item>QUEZON CITY</item>
+        <item>CITY OF SAN JUAN</item>
+        <item>CALOOCAN CITY</item>
+        <item>CITY OF MALABON</item>
+        <item>CITY OF NAVOTAS</item>
+        <item>CITY OF VALENZUELA</item>
+        <item>CITY OF LAS PIÑAS</item>
+        <item>CITY OF MAKATI</item>
+        <item>CITY OF MUNTINLUPA</item>
+        <item>CITY OF PARAÑAQUE</item>
+        <item>PASAY CITY</item>
+        <item>PATEROS</item>
+        <item>TAGUIG CITY</item>
+    </string-array>
+    
     <string-array name="array_default_barangays">
         <item>Select your barangay</item>
     </string-array>
