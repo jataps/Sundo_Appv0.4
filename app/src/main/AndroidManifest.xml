@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SundoAppV04">
         <activity
+            android:name=".ServiceDriver"
+            android:exported="false" />
+        <activity
             android:name=".FillUpForm"
             android:exported="false" />
         <activity
