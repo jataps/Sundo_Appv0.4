@@ -104,11 +104,8 @@ public class RegisterDriver extends AppCompatActivity {
                                                 String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                                                 //user id store in realtime database
-                                                dbRef.child("users").child(currentUser).child("email").setValue(email);
-                                                dbRef.child("users").child(currentUser).child("passOptional").setValue(password);
-                                                dbRef.child("users").child(currentUser).child("uid").setValue(currentUser);
-                                                dbRef.child("users").child(currentUser).child("userType").setValue("driver");
-                                                dbRef.child("users").child(currentUser).child("status").setValue("offline");
+                                                dbRef.child("USERS").child("DRIVER").child(currentUser).child("email").setValue(email);
+                                                dbRef.child("USERS").child("DRIVER").child(currentUser).child("UID").setValue(currentUser);
 
                                                 Intent intent = new Intent(getApplicationContext(), LogIn.class);
                                                 startActivity((intent));

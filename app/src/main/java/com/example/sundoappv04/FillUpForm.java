@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,8 +23,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.HashMap;
@@ -31,13 +34,44 @@ import java.util.Map;
 
 public class FillUpForm extends AppCompatActivity {
 
-    TextView uidText, provinceText, cityText, barangayText;
-    TextInputEditText editTextFirstName, editTextLastName, editTextMiddleName, editTextPhoneNumber, editTextEmergencyName, editTextEmergencyNumber, ediTextAddNotes;
-    MaterialButton signOutBtnStudent, submitBtnStudent;
-    String userType, selectedProvince, selectedCity, selectedBarangay;
-    Spinner provinceSpinner, citySpinner, barangaySpinner;
-    ArrayAdapter<CharSequence> provinceAdapter, cityAdapter, barangayAdapter;
+    // TextView
+    TextView uidText;
+    TextView provinceText;
+    TextView cityText;
+    TextView barangayText;
 
+    // TextInputEditText
+    TextInputEditText editTextFirstName;
+    TextInputEditText editTextLastName;
+    TextInputEditText editTextMiddleName;
+    TextInputEditText editTextPhoneNumber;
+    TextInputEditText editTextEmergencyName;
+    TextInputEditText editTextEmergencyNumber;
+    TextInputEditText ediTextAddNotes;
+    TextInputEditText ediTextPlateNumber;
+    TextInputEditText ediTextSeatingCapacity;
+
+    // MaterialButton
+    MaterialButton signOutBtnStudent;
+    MaterialButton submitBtnStudent;
+
+    // Strings
+    String userType;
+    String selectedProvince;
+    String selectedCity;
+    String selectedBarangay;
+
+    // Spinners
+    Spinner provinceSpinner;
+    Spinner citySpinner;
+    Spinner barangaySpinner;
+
+    // Adapters
+    ArrayAdapter<CharSequence> provinceAdapter;
+    ArrayAdapter<CharSequence> cityAdapter;
+    ArrayAdapter<CharSequence> barangayAdapter;
+
+    // HashMap
     HashMap<String, Integer> provinces = new HashMap<>();
     HashMap<String, Integer> cities = new HashMap<>();
     
@@ -48,12 +82,6 @@ public class FillUpForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fill_up_form);
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sundo-app-44703-default-rtdb.firebaseio.com/");
-
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        mAuth = FirebaseAuth.getInstance();
-
         //EDITTEXTS
         editTextFirstName = findViewById(R.id.firstName);
         editTextLastName = findViewById(R.id.lastName);
@@ -62,6 +90,8 @@ public class FillUpForm extends AppCompatActivity {
         editTextEmergencyName = findViewById(R.id.emergencyName);
         editTextEmergencyNumber = findViewById(R.id.emergencyNumber);
         ediTextAddNotes = findViewById(R.id.addressNote);
+        ediTextPlateNumber = findViewById(R.id.plateNumber);
+        ediTextSeatingCapacity = findViewById(R.id.seatingCapacity);
 
         //MATERIAL BUTTONS
         signOutBtnStudent = findViewById(R.id.signOutBtnStudent);
@@ -79,7 +109,6 @@ public class FillUpForm extends AppCompatActivity {
         editTextMiddleName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         editTextEmergencyName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         ediTextAddNotes.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-
         editTextPhoneNumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
         editTextEmergencyNumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
 
@@ -89,290 +118,22 @@ public class FillUpForm extends AppCompatActivity {
         provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         provinceSpinner.setAdapter(provinceAdapter);
 
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sundo-app-44703-default-rtdb.firebaseio.com/");
+
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        mAuth = FirebaseAuth.getInstance();
+
         provinceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 citySpinner = findViewById(R.id.citySpinner);
 
-
-
-                //get selected province
                 selectedProvince = provinceSpinner.getSelectedItem().toString();
 
                 int parentID = adapterView.getId();
                 if(parentID == R.id.provinceSpinner){
-                    /*switch(selectedProvince){
-                        case "Select your province": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_default_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ILOCOS NORTE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_ilocos_norte_128_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ILOCOS SUR": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_ilocos_sur_129_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "LA UNION": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_la_union_133_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "PANGASINAN": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_pangasinan_155_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "BATANES": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_batanes_209_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "CAGAYAN": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_cagayan_215_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ISABELA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_isabela_231_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "NUEVA VIZCAYA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_nueva_vizcaya_250_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "QUIRINO": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_quirino_257_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "BATAAN": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_bataan_308_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "BULACAN": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_bulacan_314_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "NUEVA ECIJA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_nueva_ecija_349_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "PAMPANGA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_pampanga_354_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "TARLAC": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_tarlac_369_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ZAMBALES": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_zambales_371_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "AURORA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_aurora_377_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "BATANGAS": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_batangas_410_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "CAVITE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_cavite_421_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "LAGUNA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_laguna_434_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "QUEZON": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_quezon_456_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "RIZAL": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_rizal_458_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "MARINDUQUE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_marinduque_1740_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "OCCIDENTAL MINDORO": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_occidental_mindoro_1751_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ORIENTAL MINDORO": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_oriental_mindoro_1752_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "PALAWAN": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_palawan_1753_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ROMBLON": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_romblon_1759_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ALBAY": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_albay_505_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "CAMARINES NORTE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_camarines_norte_516_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "CAMARINES SUR": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_camarines_sur_517_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "CATANDUANES": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_catanduanes_520_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "MASBATE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_masbate_541_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "SORSOGON": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_sorsogon_562_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "AKLAN": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_aklan_604_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ANTIQUE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_antique_606_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "CAPIZ": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_capiz_619_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ILOILO": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_iloilo_630_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "NEGROS OCCIDENTAL": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_negros_occidental_645_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "GUIMARAS": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_guimaras_679_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "BOHOL": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_bohol_712_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "CEBU": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_cebu_722_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "NEGROS ORIENTAL": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_negros_oriental_746_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "SIQUIJOR": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_siquijor_761_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "EASTERN SAMAR": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_eastern_samar_826_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "LEYTE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_leyte_837_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "NORTHERN SAMAR": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_northern_samar_848_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "SAMAR (WESTERN SAMAR)": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_samar_western_samar_860_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "SOUTHERN LEYTE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_southern_leyte_864_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "BILIRAN": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_biliran_878_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ZAMBOANGA DEL NORTE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_zamboanga_del_norte_972_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ZAMBOANGA DEL SUR": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_zamboanga_del_sur_973_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ZAMBOANGA SIBUGAY": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_zamboanga_sibugay_983_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "CITY OF ISABELA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_city_of_isabela_997_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "BUKIDNON": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_bukidnon_1013_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "CAMIGUIN": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_camiguin_1018_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "LANAO DEL NORTE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_lanao_del_norte_1035_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "MISAMIS OCCIDENTAL": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_misamis_occidental_1042_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "MISAMIS ORIENTAL": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_misamis_oriental_1043_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "DAVAO DEL NORTE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_davao_del_norte_1123_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "DAVAO DEL SUR": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_davao_del_sur_1124_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "DAVAO ORIENTAL": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_davao_oriental_1125_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "COMPOSTELA VALLEY": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_compostela_valley_1182_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "DAVAO OCCIDENTAL": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_davao_occidental_1186_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "COTABATO (NORTH COTABATO)": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_cotabato_north_cotabato_1247_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "SOUTH COTABATO": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_south_cotabato_1263_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "SULTAN KUDARAT": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_sultan_kudarat_1265_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "SARANGANI": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_sarangani_1280_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "COTABATO CITY": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_cotabato_city_1298_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "NCR, CITY OF MANILA, FIRST DISTRICT": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_ncr_city_of_manila_first_district_1339_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "CITY OF MANILA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_city_of_manila_1339_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "NCR, SECOND DISTRICT": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_ncr_second_district_1374_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "NCR, THIRD DISTRICT": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_ncr_third_district_1375_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "NCR, FOURTH DISTRICT": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_ncr_fourth_district_1376_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "ABRA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_abra_1401_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "BENGUET": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_benguet_1411_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "IFUGAO": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_ifugao_1427_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "KALINGA": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_kalinga_1432_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "MOUNTAIN PROVINCE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_mountain_province_1444_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "APAYAO": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_apayao_1481_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "BASILAN": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_basilan_1507_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "LANAO DEL SUR": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_lanao_del_sur_1536_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "MAGUINDANAO": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_maguindanao_1538_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "SULU": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_sulu_1566_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "TAWI-TAWI": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_tawi_tawi_1570_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "AGUSAN DEL NORTE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_agusan_del_norte_1602_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "AGUSAN DEL SUR": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_agusan_del_sur_1603_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "SURIGAO DEL NORTE": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_surigao_del_norte_1667_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "SURIGAO DEL SUR": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_surigao_del_sur_1668_cities, R.layout.spinner_layout);
-                            break;
-
-                        case "DINAGAT ISLANDS": cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), R.array.array_dinagat_islands_1685_cities, R.layout.spinner_layout);
-                            break;
-
-                        default: break;
-
-                    }*/
 
                     mapProvinces();
 
@@ -436,38 +197,83 @@ public class FillUpForm extends AppCompatActivity {
             }
         });
 
-        dbRef.child("users").child(currentUser).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+
+        // WILL GET THE USER TYPE
+        dbRef.child("USERS").orderByChild("STUDENT").equalTo(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // User is a STUDENT
+                    userType = "STUDENT";
 
-                if (task.isSuccessful()) {
-
-                    //if current user does exist we read its content here users > student > UID <- start here
-                    if (task.getResult().exists()) {
-
-                        dbRef.child("users").child(currentUser).child("status").setValue("online");
-
-                        DataSnapshot dataSnapshot = task.getResult();
-                        userType = String.valueOf(dataSnapshot.child("userType").getValue());
-
-
-                        /*
-                            String email = String.valueOf(dataSnapshot.child("email").getValue());
-
-                            String userType = String.valueOf(dataSnapshot.child("userType").getValue());
-                            String uid = String.valueOf(dataSnapshot.child("uid").getValue()); //test textview
-
-                            studentEmail.setText(email);
-                            studentName.setText(userType);
-                            uidText.setText(uid); //test textview
-                         */
-
-                    }
-
+                    ediTextPlateNumber.setVisibility(View.GONE);
+                    ediTextSeatingCapacity.setVisibility(View.GONE);
                 } else {
-                    Toast.makeText(FillUpForm.this, "User does not exist!", Toast.LENGTH_SHORT).show();
-                }
 
+                    dbRef.child("USERS").orderByChild("DRIVER").equalTo(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                // User with the given UID exists in DRIVER
+                                userType = "DRIVER";
+
+                            } else {
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // Handle error
+                        }
+                    });
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
+
+        dbRef.child("USERS").child("DRIVER").orderByChild("UID").equalTo(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // User with the given UID exists in DRIVER
+                    userType = "DRIVER";
+
+                    ediTextPlateNumber.setVisibility(View.VISIBLE);
+                    ediTextSeatingCapacity.setVisibility(View.VISIBLE);
+                } else {
+                    // User with the given UID does not exist in DRIVER
+                    // Check if it exists in STUDENT
+                    dbRef.child("USERS").child("STUDENT").orderByChild("UID").equalTo(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                // User is a STUDENT
+                                userType = "STUDENT";
+
+                            } else {
+                                // User with the given UID does not exist in either DRIVER or STUDENT node
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // Handle error
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
             }
         });
 
@@ -552,10 +358,11 @@ public class FillUpForm extends AppCompatActivity {
                 String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String completeAdd = addNote + " Brgy. " + barangay + ", " + city + ", " + province;
 
-                DatabaseReference userRef = dbRef.child("users").child(currentUser).child("recordID");
-                DatabaseReference recordRef = dbRef.child("records");
+                DatabaseReference userRef = dbRef.child("USERS").child(userType).child(currentUser).child("INFO_ID");
+                DatabaseReference recordRef = dbRef.child("USER_INFORMATION").child(userType);
 
                 String requestID = recordRef.push().getKey();
+
                 userRef.setValue(requestID);
 
                 HashMap map = new HashMap();
@@ -564,7 +371,6 @@ public class FillUpForm extends AppCompatActivity {
                 map.put("firstName", firstName);
                 map.put("middleName", middleName);
                 map.put("contactNumber", contactNumber);
-                map.put("userType", userType);
 
                 map.put("emergencyName", emergencyName);
                 map.put("emergencyNumber", emergencyNumber);
@@ -572,6 +378,18 @@ public class FillUpForm extends AppCompatActivity {
                 map.put("address/longitude", false);
                 map.put("address/latitude", false);
                 map.put("address/completeAdd", completeAdd);
+
+                if (userType.equals("DRIVER")) {
+                    String plateNumber = String.valueOf(ediTextPlateNumber);
+                    int seatingCapacity = Integer.parseInt(String.valueOf(ediTextSeatingCapacity));
+
+                    map.put("VEHICLE/plateNumber", plateNumber);
+                    map.put("VEHICLE/capacity", seatingCapacity);
+                    map.put("VEHICLE/status", "active");
+
+                    ediTextPlateNumber.setVisibility(View.GONE);
+                    ediTextSeatingCapacity.setVisibility(View.GONE);
+                }
 
                 recordRef.child(requestID).updateChildren(map);
 
@@ -582,7 +400,6 @@ public class FillUpForm extends AppCompatActivity {
         signOutBtnStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbRef.child("users").child(currentUser).child("status").setValue("offline");
 
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getApplicationContext(), LogIn.class);
@@ -2258,7 +2075,7 @@ public class FillUpForm extends AppCompatActivity {
     }
 
     void mapProvinces() {
-        provinces.put("Select your province", R.array.array_default_barangays);
+        provinces.put("Select your province", R.array.array_default_cities);
         provinces.put("ILOCOS NORTE", R.array.array_ilocos_norte_128_cities);
         provinces.put("ILOCOS SUR", R.array.array_ilocos_sur_129_cities);
         provinces.put("LA UNION", R.array.array_la_union_133_cities);

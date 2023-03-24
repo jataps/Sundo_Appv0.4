@@ -56,12 +56,9 @@ public class HomeDriver extends AppCompatActivity {
                         dbRef.child("users").child(currentUser).child("status").setValue("online");
 
                         DataSnapshot dataSnapshot = task.getResult();
-                        String email = String.valueOf(dataSnapshot.child("email").getValue());
-                        String userType = String.valueOf(dataSnapshot.child("userType").getValue());
+
                         String uid = String.valueOf(dataSnapshot.child("uid").getValue()); //test textview
 
-                        driverEmail.setText(email);
-                        driverName.setText(userType);
                         uidText.setText(uid); //test textview
 
                     } else {
@@ -78,7 +75,6 @@ public class HomeDriver extends AppCompatActivity {
         signOutBtnDriver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbRef.child("users").child(currentUser).child("status").setValue("offline");
 
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getApplicationContext(), LogIn.class);

@@ -22,13 +22,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class LogIn extends AppCompatActivity {
 
-    MaterialButton registerBtn, loginBtn;
-    TextInputEditText editTextEmail, editTextPassword;
+    MaterialButton registerBtn;
+    MaterialButton loginBtn;
+    TextInputEditText editTextEmail;
+    TextInputEditText editTextPassword;
     TextView forgotPass;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
@@ -40,11 +43,10 @@ public class LogIn extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //if last user has logged in and verified, auto-sign in will trigger
-        if((currentUser != null) && (mAuth.getCurrentUser().isEmailVerified())) {
+        if((currentUser != null) && (currentUser.isEmailVerified())) {
 
             String uid = mAuth.getCurrentUser().getUid();
-
-            filterType(uid);
+            filterType2(uid);
         }
 
     }
@@ -93,28 +95,27 @@ public class LogIn extends AppCompatActivity {
                     return;
                 }
 
-                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressBar.setVisibility(View.GONE);
-                                if (task.isSuccessful()) {
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
 
-                                    if(mAuth.getCurrentUser().isEmailVerified()){
-
-                                        String uid = task.getResult().getUser().getUid();
-                                        filterType(uid);
-
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), "Please verify your email.", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(LogIn.this, task.getException().getMessage(),
-                                            Toast.LENGTH_SHORT).show();
+                                // Check if email is verified
+                                if(!(mAuth.getCurrentUser().isEmailVerified())){
+                                    Toast.makeText(getApplicationContext(), "Please verify your email.", Toast.LENGTH_SHORT).show();
+                                    return;
                                 }
+
+                                String uid = mAuth.getCurrentUser().getUid();
+
+                                filterType2(uid);
+
+                            } else {
+                                // If log in fails, display a message to the user.
+                                Toast.makeText(LogIn.this, task.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
                             }
                         });
+
             }
         });
 
@@ -128,7 +129,55 @@ public class LogIn extends AppCompatActivity {
 
     }
 
+    void filterType2 (String uid) {
+        // Login successful, get the user's UID
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        // Check if the user is a student or a driver
+        ref.child("USERS").child("DRIVER").orderByChild("UID").equalTo(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // User with the given UID exists in DRIVER
+                    Intent driverIntent = new Intent(getApplicationContext(), FillUpForm.class);
+                    startActivity(driverIntent);
+                    finish();
+                } else {
+                    // User with the given UID does not exist in DRIVER
+                    // Check if it exists in STUDENT
+                    ref.child("USERS").child("STUDENT").orderByChild("UID").equalTo(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                // User is a STUDENT
+                                Intent studentIntent = new Intent(getApplicationContext(), FillUpForm.class);
+                                startActivity(studentIntent);
+                                finish();
+
+                            } else {
+                                // User with the given UID does not exist in either DRIVER or STUDENT node
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // Handle error
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
+
+    }
+
     void filterType (String uid) {
+
         fireDb.getReference().child("users").child(uid).child("userType").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
