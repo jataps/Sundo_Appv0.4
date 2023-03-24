@@ -23,10 +23,10 @@
             android:name=".ForgotPassword"
             android:exported="false" />
         <activity
-            android:name=".RegisterStudent"
+            android:name=".HomeDriver"
             android:exported="false" />
         <activity
-            android:name=".HomeDriver"
+            android:name=".RegisterStudent"
             android:exported="false" />
         <activity
             android:name=".LogIn"
