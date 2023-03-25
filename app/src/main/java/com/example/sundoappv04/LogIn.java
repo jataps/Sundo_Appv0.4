@@ -46,7 +46,7 @@ public class LogIn extends AppCompatActivity {
         if((currentUser != null) && (currentUser.isEmailVerified())) {
 
             String uid = mAuth.getCurrentUser().getUid();
-            filterType2(uid);
+            filterUserType(uid);
         }
 
     }
@@ -107,7 +107,7 @@ public class LogIn extends AppCompatActivity {
 
                                 String uid = mAuth.getCurrentUser().getUid();
 
-                                filterType2(uid);
+                                filterUserType(uid);
 
                             } else {
                                 // If log in fails, display a message to the user.
@@ -129,7 +129,7 @@ public class LogIn extends AppCompatActivity {
 
     }
 
-    void filterType2 (String uid) {
+    void filterUserType (String uid) {
         // Login successful, get the user's UID
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
@@ -174,37 +174,6 @@ public class LogIn extends AppCompatActivity {
             }
         });
 
-    }
-
-    void filterType (String uid) {
-
-        fireDb.getReference().child("users").child(uid).child("userType").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                String userType = String.valueOf(snapshot.getValue());
-
-                switch (userType) {
-                    case "driver":
-                        Intent driverIntent = new Intent(getApplicationContext(), FillUpForm.class);
-                        startActivity(driverIntent);
-                        finish();
-                        break;
-
-                    case "student":
-                        Intent studentIntent = new Intent(getApplicationContext(), FillUpForm.class);
-                        startActivity(studentIntent);
-                        finish();
-                        break;
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     @Override

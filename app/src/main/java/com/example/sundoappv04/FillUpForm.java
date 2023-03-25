@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +40,7 @@ public class FillUpForm extends AppCompatActivity {
     TextView provinceText;
     TextView cityText;
     TextView barangayText;
+    TextView vehicleText;
 
     // TextInputEditText
     TextInputEditText editTextFirstName;
@@ -47,9 +49,13 @@ public class FillUpForm extends AppCompatActivity {
     TextInputEditText editTextPhoneNumber;
     TextInputEditText editTextEmergencyName;
     TextInputEditText editTextEmergencyNumber;
-    TextInputEditText ediTextAddNotes;
-    TextInputEditText ediTextPlateNumber;
-    TextInputEditText ediTextSeatingCapacity;
+    TextInputEditText editTextAddNotes;
+    TextInputEditText editTextPlateNumber;
+    TextInputEditText editTextSeatingCapacity;
+
+    // TEXT INPUT LAYOUT
+    TextInputLayout plateNumberContainer;
+    TextInputLayout seatingCapacityContainer;
 
     // MaterialButton
     MaterialButton signOutBtnStudent;
@@ -74,8 +80,16 @@ public class FillUpForm extends AppCompatActivity {
     // HashMap
     HashMap<String, Integer> provinces = new HashMap<>();
     HashMap<String, Integer> cities = new HashMap<>();
-    
+
+    // FIREBASE
     FirebaseAuth mAuth;
+    DatabaseReference dbRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sundo-app-44703-default-rtdb.firebaseio.com/");
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +103,13 @@ public class FillUpForm extends AppCompatActivity {
         editTextPhoneNumber = findViewById(R.id.phoneNumber);
         editTextEmergencyName = findViewById(R.id.emergencyName);
         editTextEmergencyNumber = findViewById(R.id.emergencyNumber);
-        ediTextAddNotes = findViewById(R.id.addressNote);
-        ediTextPlateNumber = findViewById(R.id.plateNumber);
-        ediTextSeatingCapacity = findViewById(R.id.seatingCapacity);
+        editTextAddNotes = findViewById(R.id.addressNote);
+        editTextPlateNumber = findViewById(R.id.plateNumber);
+        editTextSeatingCapacity = findViewById(R.id.seatingCapacity);
+
+        // EDIT TEXTS LAYOUT
+        plateNumberContainer = findViewById(R.id.plateNumberContainer);
+        seatingCapacityContainer = findViewById(R.id.seatingCapacityContainer);
 
         //MATERIAL BUTTONS
         signOutBtnStudent = findViewById(R.id.signOutBtnStudent);
@@ -102,25 +120,23 @@ public class FillUpForm extends AppCompatActivity {
         provinceText = findViewById(R.id.provinceText);
         cityText = findViewById(R.id.cityText);
         barangayText = findViewById(R.id.barangayText);
+        vehicleText = findViewById(R.id.vehicleText);
 
         //TEXT FILTERS
         editTextFirstName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         editTextLastName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         editTextMiddleName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         editTextEmergencyName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        ediTextAddNotes.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        editTextAddNotes.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         editTextPhoneNumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
         editTextEmergencyNumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
+        editTextSeatingCapacity.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
 
         //SPINNER
         provinceSpinner = findViewById(R.id.provinceSpinner);
         provinceAdapter = ArrayAdapter.createFromResource(this, R.array.array_provinces, R.layout.spinner_layout);
         provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         provinceSpinner.setAdapter(provinceAdapter);
-
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sundo-app-44703-default-rtdb.firebaseio.com/");
-
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -199,35 +215,17 @@ public class FillUpForm extends AppCompatActivity {
 
 
         // WILL GET THE USER TYPE
-        dbRef.child("USERS").orderByChild("STUDENT").equalTo(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
+        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        dbRef.child("USERS").child("STUDENT").orderByChild("UID").equalTo(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     // User is a STUDENT
                     userType = "STUDENT";
 
-                    ediTextPlateNumber.setVisibility(View.GONE);
-                    ediTextSeatingCapacity.setVisibility(View.GONE);
+                    uidText.setText(userType);
+
                 } else {
-
-                    dbRef.child("USERS").orderByChild("DRIVER").equalTo(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                // User with the given UID exists in DRIVER
-                                userType = "DRIVER";
-
-                            } else {
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            // Handle error
-                        }
-                    });
-
 
                 }
             }
@@ -245,8 +243,29 @@ public class FillUpForm extends AppCompatActivity {
                     // User with the given UID exists in DRIVER
                     userType = "DRIVER";
 
-                    ediTextPlateNumber.setVisibility(View.VISIBLE);
-                    ediTextSeatingCapacity.setVisibility(View.VISIBLE);
+                    uidText.setText(userType);
+
+                    vehicleDetailShow(View.VISIBLE);
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
+
+        /*
+        dbRef.child("USERS").child("DRIVER").orderByChild("UID").equalTo(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // User with the given UID exists in DRIVER
+                    userType = "DRIVER";
+
+
                 } else {
                     // User with the given UID does not exist in DRIVER
                     // Check if it exists in STUDENT
@@ -276,6 +295,7 @@ public class FillUpForm extends AppCompatActivity {
                 // Handle error
             }
         });
+         */
 
         submitBtnStudent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -293,7 +313,7 @@ public class FillUpForm extends AppCompatActivity {
                 String city = String.valueOf(selectedCity);
                 String barangay = String.valueOf(selectedBarangay);
 
-                String addNote = String.valueOf(ediTextAddNotes.getText());
+                String addNote = String.valueOf(editTextAddNotes.getText());
 
                 if (TextUtils.isEmpty(firstName)) {
                     editTextFirstName.setError("Enter first name!");
@@ -350,8 +370,8 @@ public class FillUpForm extends AppCompatActivity {
                 }
 
                 if (TextUtils.isEmpty(addNote)) {
-                    ediTextAddNotes.setError("Enter note!");
-                    ediTextAddNotes.requestFocus();
+                    editTextAddNotes.setError("Enter note!");
+                    editTextAddNotes.requestFocus();
                     return;
                 }
 
@@ -380,15 +400,14 @@ public class FillUpForm extends AppCompatActivity {
                 map.put("address/completeAdd", completeAdd);
 
                 if (userType.equals("DRIVER")) {
-                    String plateNumber = String.valueOf(ediTextPlateNumber);
-                    int seatingCapacity = Integer.parseInt(String.valueOf(ediTextSeatingCapacity));
+                    String plateNumber = String.valueOf(editTextPlateNumber);
+                    int seatingCapacity = Integer.parseInt(String.valueOf(editTextSeatingCapacity));
 
                     map.put("VEHICLE/plateNumber", plateNumber);
                     map.put("VEHICLE/capacity", seatingCapacity);
                     map.put("VEHICLE/status", "active");
 
-                    ediTextPlateNumber.setVisibility(View.GONE);
-                    ediTextSeatingCapacity.setVisibility(View.GONE);
+                    vehicleDetailShow(View.GONE);
                 }
 
                 recordRef.child(requestID).updateChildren(map);
@@ -407,6 +426,14 @@ public class FillUpForm extends AppCompatActivity {
                 finish();
             }
         });
+
+    }
+
+    public void vehicleDetailShow(int is_visible) {
+
+        vehicleText.setVisibility(is_visible);
+        plateNumberContainer.setVisibility(is_visible);
+        seatingCapacityContainer.setVisibility(is_visible);
 
     }
 
