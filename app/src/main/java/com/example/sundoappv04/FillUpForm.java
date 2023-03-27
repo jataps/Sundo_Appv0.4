@@ -81,22 +81,18 @@ public class FillUpForm extends AppCompatActivity {
     HashMap<String, Integer> provinces = new HashMap<>();
     HashMap<String, Integer> cities = new HashMap<>();
 
+    HashMap<String, String> userInformation = new HashMap<>();
+
     // FIREBASE
     FirebaseAuth mAuth;
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sundo-app-44703-default-rtdb.firebaseio.com/");
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fill_up_form);
 
-        //EDITTEXTS
+        //EDIT TEXTS
         editTextFirstName = findViewById(R.id.firstName);
         editTextLastName = findViewById(R.id.lastName);
         editTextMiddleName = findViewById(R.id.middleName);
@@ -115,14 +111,14 @@ public class FillUpForm extends AppCompatActivity {
         signOutBtnStudent = findViewById(R.id.signOutBtnStudent);
         submitBtnStudent = findViewById(R.id.submitBtnStudent);
 
-        //TEXTVIEWS
+        //TEXT VIEWS
         uidText = findViewById(R.id.uidText);
         provinceText = findViewById(R.id.provinceText);
         cityText = findViewById(R.id.cityText);
         barangayText = findViewById(R.id.barangayText);
         vehicleText = findViewById(R.id.vehicleText);
 
-        //TEXT FILTERS
+        //EDIT TEXT FILTERS
         editTextFirstName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         editTextLastName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         editTextMiddleName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
@@ -213,9 +209,9 @@ public class FillUpForm extends AppCompatActivity {
             }
         });
 
-
         // WILL GET THE USER TYPE
         String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         dbRef.child("USERS").child("STUDENT").orderByChild("UID").equalTo(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -257,46 +253,6 @@ public class FillUpForm extends AppCompatActivity {
             }
         });
 
-        /*
-        dbRef.child("USERS").child("DRIVER").orderByChild("UID").equalTo(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    // User with the given UID exists in DRIVER
-                    userType = "DRIVER";
-
-
-                } else {
-                    // User with the given UID does not exist in DRIVER
-                    // Check if it exists in STUDENT
-                    dbRef.child("USERS").child("STUDENT").orderByChild("UID").equalTo(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                // User is a STUDENT
-                                userType = "STUDENT";
-
-                            } else {
-                                // User with the given UID does not exist in either DRIVER or STUDENT node
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            // Handle error
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle error
-            }
-        });
-         */
-
         submitBtnStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -315,6 +271,7 @@ public class FillUpForm extends AppCompatActivity {
 
                 String addNote = String.valueOf(editTextAddNotes.getText());
 
+                // CHECK IF EDIT TEXTS ARE EMPTY
                 if (TextUtils.isEmpty(firstName)) {
                     editTextFirstName.setError("Enter first name!");
                     editTextFirstName.requestFocus();
@@ -374,6 +331,25 @@ public class FillUpForm extends AppCompatActivity {
                     editTextAddNotes.requestFocus();
                     return;
                 }
+
+                if (seatingCapacityContainer.getVisibility() == View.VISIBLE) {
+                    int seatingCapacity = Integer.parseInt(String.valueOf(editTextSeatingCapacity));
+                    if (seatingCapacity < 10) {
+                        editTextSeatingCapacity.setError("Enter vehicle seating capacity!");
+                        editTextSeatingCapacity.requestFocus();
+                        return;
+                    }
+                }
+
+                if (plateNumberContainer.getVisibility() == View.VISIBLE) {
+                    String plateNumber = String.valueOf(editTextSeatingCapacity);
+                    if (TextUtils.isEmpty(plateNumber)) {
+                        editTextPlateNumber.setError("Enter vehicle plate number!");
+                        editTextPlateNumber.requestFocus();
+                        return;
+                    }
+                }
+
 
                 String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String completeAdd = addNote + " Brgy. " + barangay + ", " + city + ", " + province;
@@ -2100,7 +2076,6 @@ public class FillUpForm extends AppCompatActivity {
         cities.put("DINAGAT ISLANDS-SAN JOSE (Capital)", R.array.array_san_jose_capital_168506_barangays);
         cities.put("TUBAJON", R.array.array_tubajon_168507_barangays);
     }
-
     void mapProvinces() {
         provinces.put("Select your province", R.array.array_default_cities);
         provinces.put("ILOCOS NORTE", R.array.array_ilocos_norte_128_cities);
@@ -2192,4 +2167,5 @@ public class FillUpForm extends AppCompatActivity {
         provinces.put("SURIGAO DEL SUR", R.array.array_surigao_del_sur_1668_cities);
         provinces.put("DINAGAT ISLANDS", R.array.array_dinagat_islands_1685_cities);
     }
+
 }
