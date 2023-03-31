@@ -46,7 +46,7 @@ public class HomeDriver extends AppCompatActivity {
 
         uidText = findViewById(R.id.uidText);
 
-        dbRef.child("users").child(currentUser).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        dbRef.child("USERS").child("DRIVER").child(currentUser).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
 
