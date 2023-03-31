@@ -133,26 +133,97 @@ public class LogIn extends AppCompatActivity {
         // Login successful, get the user's UID
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
+        DatabaseReference studentRef = ref.child("USERS").child("STUDENT");
+        DatabaseReference driverRef = ref.child("USERS").child("DRIVER");
+
+
         // Check if the user is a student or a driver
-        ref.child("USERS").child("DRIVER").orderByChild("UID").equalTo(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        driverRef.orderByChild("UID").equalTo(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     // User with the given UID exists in DRIVER
-                    Intent driverIntent = new Intent(getApplicationContext(), FillUpForm.class);
-                    startActivity(driverIntent);
-                    finish();
+
+                    DatabaseReference driverInfoRef = driverRef.child(uid);
+
+                    driverInfoRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.hasChild("INFO_ID")) {
+                                // "INFO_ID" exists for this user
+                                Object infoIdValue = snapshot.child("INFO_ID").getValue();
+
+                                Intent driverIntent;
+
+                                if (infoIdValue.equals("false")) {
+
+                                    driverIntent = new Intent(getApplicationContext(), FillUpForm.class);
+
+                                } else {
+
+                                    driverIntent = new Intent(getApplicationContext(), HomeDriver.class);
+
+                                }
+
+                                startActivity(driverIntent);
+                                finish();
+
+                            } else {
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 } else {
                     // User with the given UID does not exist in DRIVER
                     // Check if it exists in STUDENT
-                    ref.child("USERS").child("STUDENT").orderByChild("UID").equalTo(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                    studentRef.orderByChild("UID").equalTo(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()) {
                                 // User is a STUDENT
-                                Intent studentIntent = new Intent(getApplicationContext(), FillUpForm.class);
-                                startActivity(studentIntent);
-                                finish();
+
+                                DatabaseReference studentInfoRef = studentRef.child(uid);
+
+                                studentInfoRef.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.hasChild("INFO_ID")) {
+                                            // "INFO_ID" exists for this user
+                                            Object infoIdValue = snapshot.child("INFO_ID").getValue();
+
+                                            Intent studentIntent;
+
+                                            if (infoIdValue.equals(false)) {
+
+                                                studentIntent = new Intent(getApplicationContext(), FillUpForm.class);
+
+                                            } else {
+
+                                                studentIntent = new Intent(getApplicationContext(), HomeStudent.class);
+
+                                            }
+
+                                            startActivity(studentIntent);
+                                            finish();
+
+
+                                        } else {
+                                            // "INFO_ID" does not exist for this user
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
 
                             } else {
                                 // User with the given UID does not exist in either DRIVER or STUDENT node

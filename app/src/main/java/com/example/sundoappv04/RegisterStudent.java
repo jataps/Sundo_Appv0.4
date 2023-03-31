@@ -103,9 +103,13 @@ public class RegisterStudent extends AppCompatActivity {
 
                                                 String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+                                                DatabaseReference studentRef = dbRef.child("USERS").child("STUDENT").child(currentUser);
+
                                                 //USER UID store in realtime database
-                                                dbRef.child("USERS").child("STUDENT").child(currentUser).child("email").setValue(email);
-                                                dbRef.child("USERS").child("STUDENT").child(currentUser).child("UID").setValue(currentUser);
+                                                studentRef.child("email").setValue(email);
+                                                studentRef.child("UID").setValue(currentUser);
+                                                studentRef.child("INFO_ID").setValue(false);
+                                                studentRef.child("HISTORY_ID").setValue(false);
 
                                                 Intent intent = new Intent(getApplicationContext(), LogIn.class);
                                                 startActivity(intent);

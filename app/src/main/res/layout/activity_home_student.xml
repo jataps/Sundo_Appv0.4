@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".HomeDriver">
+    tools:context=".HomeStudent">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DRIVER"
-        android:id="@+id/uidText"
+        android:text="STUDENT"
+        android:id="@+id/uidTextStudent"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
         android:textSize="34sp"
@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/nameDriver"
+        android:id="@+id/nameStudent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -27,20 +27,20 @@
         android:layout_centerInParent="true"
         android:layout_marginStart="48dp"
         android:layout_marginTop="66dp"
-        android:text="name"
+        android:text="STUDENT"
         android:textColor="@color/white"
         android:textSize="34sp" />
 
     <TextView
-        android:id="@+id/emailDriver"
+        android:id="@+id/emailStudent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nameDriver"
+        android:layout_below="@id/nameStudent"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="48dp"
         android:layout_marginTop="6dp"
-        android:text="email"
+        android:text="STUDENT"
         android:textColor="@color/white"
         android:textSize="24sp" />
 
@@ -48,37 +48,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign Out"
-        android:id="@+id/signOutBtnDriver"
+        android:id="@+id/signOutBtnStudent"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"/>
-
-    <com.google.android.material.button.MaterialButton
-
-        android:id="@+id/serviceBtnDriver"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:textSize="20dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/emailDriver"
-        android:layout_centerHorizontal="true"
-        android:text="Service" />
-
-    <com.google.android.material.button.MaterialButton
-
-        android:id="@+id/recordsBtnDriver"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:textSize="20dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_below="@id/serviceBtnDriver"
-        android:layout_centerHorizontal="true"
-        android:text="Records" />
 
 </RelativeLayout>

@@ -103,13 +103,18 @@ public class RegisterDriver extends AppCompatActivity {
 
                                                 String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                                                //user id store in realtime database
-                                                dbRef.child("USERS").child("DRIVER").child(currentUser).child("email").setValue(email);
-                                                dbRef.child("USERS").child("DRIVER").child(currentUser).child("UID").setValue(currentUser);
+                                                DatabaseReference driverRef = dbRef.child("USERS").child("DRIVER").child(currentUser);
+
+                                                //USER UID store in realtime database
+                                                driverRef.child("email").setValue(email);
+                                                driverRef.child("UID").setValue(currentUser);
+                                                driverRef.child("INFO_ID").setValue(false);
+                                                driverRef.child("HISTORY_ID").setValue(false);
 
                                                 Intent intent = new Intent(getApplicationContext(), LogIn.class);
                                                 startActivity((intent));
                                                 finish();
+
                                             } else {
                                                 Toast.makeText(RegisterDriver.this, task.getException().getMessage(),
                                                         Toast.LENGTH_SHORT).show();

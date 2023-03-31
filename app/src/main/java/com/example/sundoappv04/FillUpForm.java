@@ -35,14 +35,15 @@ import java.util.Map;
 
 public class FillUpForm extends AppCompatActivity {
 
-    // TextView
+    //region TextView
     TextView uidText;
     TextView provinceText;
     TextView cityText;
     TextView barangayText;
     TextView vehicleText;
+    //endregion
 
-    // TextInputEditText
+    //region TextInputEditText
     TextInputEditText editTextFirstName;
     TextInputEditText editTextLastName;
     TextInputEditText editTextMiddleName;
@@ -52,45 +53,53 @@ public class FillUpForm extends AppCompatActivity {
     TextInputEditText editTextAddNotes;
     TextInputEditText editTextPlateNumber;
     TextInputEditText editTextSeatingCapacity;
+    //endregion
 
-    // TEXT INPUT LAYOUT
+    //region TEXT INPUT LAYOUT
     TextInputLayout plateNumberContainer;
     TextInputLayout seatingCapacityContainer;
+    //endregion
 
-    // MaterialButton
+    //region MaterialButton
     MaterialButton signOutBtnStudent;
     MaterialButton submitBtnStudent;
+    //endregion
 
-    // Strings
+    //region Strings
     String userType;
     String selectedProvince;
     String selectedCity;
     String selectedBarangay;
+    //endregion
 
-    // Spinners
+    //region Spinners
     Spinner provinceSpinner;
     Spinner citySpinner;
     Spinner barangaySpinner;
+    //endregion
 
-    // Adapters
+    //region Adapters
     ArrayAdapter<CharSequence> provinceAdapter;
     ArrayAdapter<CharSequence> cityAdapter;
     ArrayAdapter<CharSequence> barangayAdapter;
+    //endregion
 
-    // HashMap
+    //region HashMap
     HashMap<String, Integer> provinces = new HashMap<>();
     HashMap<String, Integer> cities = new HashMap<>();
+    //endregion
 
-    HashMap<String, String> userInformation = new HashMap<>();
-
-    // FIREBASE
+    //region FIREBASE
     FirebaseAuth mAuth;
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sundo-app-44703-default-rtdb.firebaseio.com/");
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fill_up_form);
+
+        //region declaration of elements
 
         //EDIT TEXTS
         editTextFirstName = findViewById(R.id.firstName);
@@ -134,80 +143,9 @@ public class FillUpForm extends AppCompatActivity {
         provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         provinceSpinner.setAdapter(provinceAdapter);
 
+        //endregion declaration
+
         mAuth = FirebaseAuth.getInstance();
-
-        provinceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                citySpinner = findViewById(R.id.citySpinner);
-
-                selectedProvince = provinceSpinner.getSelectedItem().toString();
-
-                int parentID = adapterView.getId();
-                if(parentID == R.id.provinceSpinner){
-
-                    mapProvinces();
-
-                    if (provinces.containsKey(selectedProvince)){
-                        cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), provinces.get(selectedProvince), R.layout.spinner_layout);
-                    }
-
-                    cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                    //populate the cities according to selected province
-                    citySpinner.setAdapter(cityAdapter);
-
-                    //To obtain the selected city from the cityspinner
-                    citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            barangaySpinner = findViewById(R.id.barangaySpinner);
-
-                            selectedCity = citySpinner.getSelectedItem().toString();
-
-                            int parentID = adapterView.getId();
-
-                            if(parentID == R.id.citySpinner) {
-
-                                mapCities();
-
-                                if (cities.containsKey(selectedCity)){
-                                    barangayAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), cities.get(selectedCity), R.layout.spinner_layout);
-                                }
-
-                                barangayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                                barangaySpinner.setAdapter(barangayAdapter);
-
-                                barangaySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                        selectedBarangay = barangaySpinner.getSelectedItem().toString();
-                                    }
-
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                                    }
-                                });
-
-                            }
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         // WILL GET THE USER TYPE
         String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -253,6 +191,7 @@ public class FillUpForm extends AppCompatActivity {
             }
         });
 
+        //region button functions
         submitBtnStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -333,8 +272,8 @@ public class FillUpForm extends AppCompatActivity {
                 }
 
                 if (seatingCapacityContainer.getVisibility() == View.VISIBLE) {
-                    int seatingCapacity = Integer.parseInt(String.valueOf(editTextSeatingCapacity));
-                    if (seatingCapacity < 10) {
+                    String seatingCapacity = String.valueOf(editTextSeatingCapacity.getText());
+                    if (TextUtils.isEmpty(seatingCapacity)) {
                         editTextSeatingCapacity.setError("Enter vehicle seating capacity!");
                         editTextSeatingCapacity.requestFocus();
                         return;
@@ -342,7 +281,7 @@ public class FillUpForm extends AppCompatActivity {
                 }
 
                 if (plateNumberContainer.getVisibility() == View.VISIBLE) {
-                    String plateNumber = String.valueOf(editTextSeatingCapacity);
+                    String plateNumber = String.valueOf(editTextSeatingCapacity.getText());
                     if (TextUtils.isEmpty(plateNumber)) {
                         editTextPlateNumber.setError("Enter vehicle plate number!");
                         editTextPlateNumber.requestFocus();
@@ -376,19 +315,32 @@ public class FillUpForm extends AppCompatActivity {
                 map.put("address/completeAdd", completeAdd);
 
                 if (userType.equals("DRIVER")) {
-                    String plateNumber = String.valueOf(editTextPlateNumber);
-                    int seatingCapacity = Integer.parseInt(String.valueOf(editTextSeatingCapacity));
+                    String plateNumber = String.valueOf(editTextPlateNumber.getText());
+                    String seatingCapacity = String.valueOf(editTextSeatingCapacity.getText());
 
                     map.put("VEHICLE/plateNumber", plateNumber);
                     map.put("VEHICLE/capacity", seatingCapacity);
                     map.put("VEHICLE/status", "active");
 
-                    vehicleDetailShow(View.GONE);
                 }
 
                 recordRef.child(requestID).updateChildren(map);
 
                 Toast.makeText(FillUpForm.this, "Register Successful", Toast.LENGTH_SHORT).show();
+
+                Intent intent;
+
+                if (userType.equals("DRIVER")){
+                    intent = new Intent(getApplicationContext(), HomeDriver.class);
+
+                } else {
+
+                    intent = new Intent(getApplicationContext(), HomeStudent.class);
+                }
+
+                startActivity(intent);
+                finish();
+
             }
         });
 
@@ -400,6 +352,80 @@ public class FillUpForm extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LogIn.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+        //endregion button functions
+
+        provinceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                citySpinner = findViewById(R.id.citySpinner);
+
+                selectedProvince = provinceSpinner.getSelectedItem().toString();
+
+                int parentID = adapterView.getId();
+                if(parentID == R.id.provinceSpinner){
+
+                    mapProvinces();
+
+                    if (provinces.containsKey(selectedProvince)){
+                        cityAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), provinces.get(selectedProvince), R.layout.spinner_layout);
+                    }
+
+                    cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                    //populate the cities according to selected province
+                    citySpinner.setAdapter(cityAdapter);
+
+                    //To obtain the selected city from the cityspinner
+                    citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            barangaySpinner = findViewById(R.id.barangaySpinner);
+
+                            selectedCity = citySpinner.getSelectedItem().toString();
+
+                            int parentID = adapterView.getId();
+
+                            if(parentID == R.id.citySpinner) {
+
+                                mapCities();
+
+                                if (cities.containsKey(selectedCity)){
+                                    barangayAdapter = ArrayAdapter.createFromResource(adapterView.getContext(), cities.get(selectedCity), R.layout.spinner_layout);
+                                }
+
+                                barangayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                                barangaySpinner.setAdapter(barangayAdapter);
+
+                                barangaySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                        selectedBarangay = barangaySpinner.getSelectedItem().toString();
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                    }
+                                });
+
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -426,7 +452,7 @@ public class FillUpForm extends AppCompatActivity {
                 }).create().show();
     }
 
-    void mapCities() {
+    public void mapCities() {
         cities.put("Select your city", R.array.array_default_barangays);
         cities.put("ADAMS", R.array.array_adams_12801_barangays);
         cities.put("BACARRA", R.array.array_bacarra_12802_barangays);
@@ -2076,7 +2102,8 @@ public class FillUpForm extends AppCompatActivity {
         cities.put("DINAGAT ISLANDS-SAN JOSE (Capital)", R.array.array_san_jose_capital_168506_barangays);
         cities.put("TUBAJON", R.array.array_tubajon_168507_barangays);
     }
-    void mapProvinces() {
+
+    public void mapProvinces() {
         provinces.put("Select your province", R.array.array_default_cities);
         provinces.put("ILOCOS NORTE", R.array.array_ilocos_norte_128_cities);
         provinces.put("ILOCOS SUR", R.array.array_ilocos_sur_129_cities);
