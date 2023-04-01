@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black"
     tools:context=".DriverFragmentHome">
 
@@ -44,6 +45,7 @@
             android:text="email"
             android:textColor="@color/white"
             android:textSize="24sp" />
+
 
     </RelativeLayout>
 
