@@ -22,14 +22,6 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_nav_menu"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign Out"
-        android:id="@+id/signOutBtnStudent"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_centerHorizontal="true"
-        />
+
 
 </RelativeLayout>

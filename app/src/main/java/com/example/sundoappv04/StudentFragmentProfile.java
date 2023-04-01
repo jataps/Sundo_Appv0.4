@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,14 +34,6 @@ public class StudentFragmentProfile extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-
-    private TextView emailText;
-
-    private FirebaseAuth mAuth;
-
-    private String info_id;
-
 
     public StudentFragmentProfile() {
         // Required empty public constructor
@@ -74,6 +66,15 @@ public class StudentFragmentProfile extends Fragment {
         }
     }
 
+
+    private TextView emailText;
+
+    private FirebaseAuth mAuth;
+
+    private String info_id;
+
+    private MaterialButton signOutBtnStudent;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,12 +90,18 @@ public class StudentFragmentProfile extends Fragment {
 
         emailText = view.findViewById(R.id.emailText);
 
+        signOutBtnStudent = view.findViewById(R.id.signOutBtnStudent);
+
+        signOutBtnStudent.setOnClickListener(view1 -> {
+
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getActivity(), LogIn.class);
+            startActivity(intent);
+            getActivity().finish();
+        });
+
         //get info_id
         getInfoID(info_ref);
-
-
-
-
 
         // Inflate the layout for this fragment
         return view;

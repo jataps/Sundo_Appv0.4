@@ -3,6 +3,9 @@ package com.example.sundoappv04;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +14,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sundoappv04.databinding.ActivityContainerDriverBinding;
+import com.example.sundoappv04.databinding.ActivityContainerStudentBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -21,73 +26,52 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ContainerDriver extends AppCompatActivity {
 
-    TextView driverName, driverEmail, uidText;
-    MaterialButton signOutBtnDriver, serviceBtnDriver;
     FirebaseAuth mAuth;
+
+    ActivityContainerDriverBinding binding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_container_driver);
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://sundo-app-44703-default-rtdb.firebaseio.com/");
+        binding = ActivityContainerDriverBinding.inflate(getLayoutInflater());
 
-        String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        setContentView(binding.getRoot());
 
-        mAuth = FirebaseAuth.getInstance();
+        replaceFragment(new DriverFragmentHome());
 
-        driverName = findViewById(R.id.nameDriver);
-        driverEmail = findViewById(R.id.emailDriver);
+        binding.bottomNavigationViewDriver.setOnItemSelectedListener(item -> {
 
-        serviceBtnDriver = findViewById(R.id.serviceBtnDriver);
-        signOutBtnDriver = findViewById(R.id.signOutBtnDriver);
+            switch (item.getItemId()) {
+                case R.id.navHomeDriver:
+                    replaceFragment(new DriverFragmentHome());
+                    break;
 
-        uidText = findViewById(R.id.uidText);
+                case R.id.navProfileDriver:
+                    replaceFragment(new DriverFragmentProfile());
+                    break;
 
-        dbRef.child("USERS").child("DRIVER").child(currentUser).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                case R.id.navServiceDriver:
+                    replaceFragment(new DriverFragmentService());
+                    break;
 
-                if (task.isSuccessful()) {
-
-                    if (task.getResult().exists()) {
-                        dbRef.child("users").child(currentUser).child("status").setValue("online");
-
-                        DataSnapshot dataSnapshot = task.getResult();
-
-                        String uid = String.valueOf(dataSnapshot.child("uid").getValue()); //test textview
-
-                        uidText.setText(uid); //test textview
-
-                    } else {
-                        Toast.makeText(ContainerDriver.this, "Account does not exist!", Toast.LENGTH_SHORT);
-                    }
-
-                } else {
-                    Toast.makeText(ContainerDriver.this, "Account does not exist!", Toast.LENGTH_SHORT);
-                }
-
+                case R.id.navRecordsDriver:
+                    replaceFragment(new DriverFragmentRecords());
+                    break;
             }
+            return true;
+
         });
 
-        serviceBtnDriver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ServiceDriver.class);
-                startActivity(intent);
-            }
-        });
+    }
 
-        signOutBtnDriver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    private void replaceFragment(Fragment fragment) {
 
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), LogIn.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_driver, fragment);
+        fragmentTransaction.commit();
 
     }
 

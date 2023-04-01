@@ -14,9 +14,6 @@
             android:name=".ContainerStudent"
             android:exported="false" />
         <activity
-            android:name=".ServiceDriver"
-            android:exported="false" />
-        <activity
             android:name=".FillUpForm"
             android:exported="false" />
         <activity

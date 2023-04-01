@@ -19,8 +19,6 @@
     <item
         android:title="Records"
         android:icon="@drawable/baseline_list_24"
-        android:id="@+id/navSettingsDriver" />
-
-
+        android:id="@+id/navRecordsDriver" />
 
 </menu>
