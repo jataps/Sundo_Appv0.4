@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SundoAppV04">
         <activity
-            android:name=".HomeStudent"
+            android:name=".ContainerStudent"
             android:exported="false" />
         <activity
             android:name=".ServiceDriver"
@@ -29,7 +29,7 @@
             android:name=".ForgotPassword"
             android:exported="false" />
         <activity
-            android:name=".HomeDriver"
+            android:name=".ContainerDriver"
             android:exported="false" />
         <activity
             android:name=".RegisterStudent"

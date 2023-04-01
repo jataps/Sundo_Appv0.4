@@ -1,20 +1,16 @@
 package com.example.sundoappv04;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,108 +19,108 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class LogIn extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link StudentFragmentProfile#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class StudentFragmentProfile extends Fragment {
 
-    MaterialButton registerBtn;
-    MaterialButton loginBtn;
-    TextInputEditText editTextEmail;
-    TextInputEditText editTextPassword;
-    TextView forgotPass;
-    FirebaseAuth mAuth;
-    ProgressBar progressBar;
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
-        //if last user has logged in and verified, auto-sign in will trigger
-        if((currentUser != null) && (currentUser.isEmailVerified())) {
 
-            String uid = mAuth.getCurrentUser().getUid();
-            filterUserType(uid);
-        }
+    private TextView emailText;
 
+    private FirebaseAuth mAuth;
+
+    private String info_id;
+
+
+    public StudentFragmentProfile() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment StudentFragmentProfile.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static StudentFragmentProfile newInstance(String param1, String param2) {
+        StudentFragmentProfile fragment = new StudentFragmentProfile();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
 
-        registerBtn = findViewById(R.id.registerbtn);
-        loginBtn = findViewById(R.id.loginbtn);
-        editTextEmail = findViewById(R.id.username);
-        editTextPassword = findViewById(R.id.password);
-        progressBar = findViewById(R.id.progressBar);
-        forgotPass = findViewById(R.id.forgotPass);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_student_profile, container, false);
 
         mAuth = FirebaseAuth.getInstance();
 
-        registerBtn.setOnClickListener(new View.OnClickListener() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        String uid = mAuth.getCurrentUser().getUid();
+
+        DatabaseReference info_ref = ref.child("USERS").child("STUDENT").child(uid).child("INFO_ID");
+
+        emailText = view.findViewById(R.id.emailText);
+
+        //get info_id
+        getInfoID(info_ref);
+
+
+
+
+
+        // Inflate the layout for this fragment
+        return view;
+    }
+
+    void getInfoID (DatabaseReference info_ref) {
+
+        info_ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), RegisterMain.class);
-                startActivity(intent);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                info_id = String.valueOf(snapshot.getValue());
+
+                emailText.setText(info_id);
             }
-        });
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
-                String email, password;
-                email = String.valueOf(editTextEmail.getText()).trim();
-                password = String.valueOf(editTextPassword.getText());
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                if (TextUtils.isEmpty(email)) {
-                    editTextEmail.setError("Enter Email!");
-                    editTextEmail.requestFocus();
-                    progressBar.setVisibility(View.GONE);
-                    return;
-                }
-
-                if (TextUtils.isEmpty(password)) {
-                    editTextPassword.setError("Enter password!");
-                    editTextPassword.requestFocus();
-                    progressBar.setVisibility(View.GONE);
-                    return;
-                }
-
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-
-                                // Check if email is verified
-                                if(!(mAuth.getCurrentUser().isEmailVerified())){
-                                    Toast.makeText(getApplicationContext(), "Please verify your email.", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-
-                                String uid = mAuth.getCurrentUser().getUid();
-
-                                filterUserType(uid);
-
-                            } else {
-                                // If log in fails, display a message to the user.
-                                Toast.makeText(LogIn.this, task.getException().getMessage(),
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-            }
-        });
-
-        forgotPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ForgotPassword.class);
-                startActivity(intent);
             }
         });
 
     }
 
+
+
+/*
     void filterUserType (String uid) {
         // Login successful, get the user's UID
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -157,7 +153,7 @@ public class LogIn extends AppCompatActivity {
 
                                 } else {
 
-                                    driverIntent = new Intent(getApplicationContext(), ContainerDriver.class);
+                                    driverIntent = new Intent(getApplicationContext(), HomeDriver.class);
 
                                 }
 
@@ -242,18 +238,6 @@ public class LogIn extends AppCompatActivity {
         });
 
     }
+*/
 
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        LogIn.super.onBackPressed();
-                    }
-                }).create().show();
-    }
 }

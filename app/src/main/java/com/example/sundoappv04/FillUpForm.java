@@ -13,12 +13,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,9 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
-import java.util.Map;
 
 public class FillUpForm extends AppCompatActivity {
 
@@ -331,11 +326,11 @@ public class FillUpForm extends AppCompatActivity {
                 Intent intent;
 
                 if (userType.equals("DRIVER")){
-                    intent = new Intent(getApplicationContext(), HomeDriver.class);
+                    intent = new Intent(getApplicationContext(), ContainerDriver.class);
 
                 } else {
 
-                    intent = new Intent(getApplicationContext(), HomeStudent.class);
+                    intent = new Intent(getApplicationContext(), ContainerStudent.class);
                 }
 
                 startActivity(intent);
