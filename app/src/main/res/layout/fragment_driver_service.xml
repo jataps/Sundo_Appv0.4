@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/serviceBtnDriver"
+            android:id="@+id/addStudentBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -23,7 +23,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/onboardList"
-            android:layout_below="@+id/serviceBtnDriver"
+            android:layout_below="@+id/addStudentBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
