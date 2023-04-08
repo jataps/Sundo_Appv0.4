@@ -47,7 +47,6 @@ public class CustomStudentAdapter extends RecyclerView.Adapter<CustomStudentAdap
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textFirstName, textEmail;
         TextView textFN, textLN, textMail;
 
         public MyViewHolder(@NonNull View itemView) {
