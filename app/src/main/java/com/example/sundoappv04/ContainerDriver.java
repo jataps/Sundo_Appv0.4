@@ -26,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ContainerDriver extends AppCompatActivity {
 
-    FirebaseAuth mAuth;
 
     ActivityContainerDriverBinding binding;
 

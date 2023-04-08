@@ -45,7 +45,6 @@ public class ContainerStudent extends AppCompatActivity {
             replaceFragment(new StudentFragmentHome());
         }
 
-
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch (item.getItemId()) {
