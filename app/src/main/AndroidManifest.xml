@@ -9,12 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SundoAppV04">
-
         <!-- Add the Google Maps API key as a meta-data element -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAqm04uBwJCxGsXU7oP0Y_DgpzYiLiOCXA"/>
 
+        <activity
+            android:name=".DriverAddStudent"
+            android:exported="false" />
+        <activity
+            android:name=".DriverAddStudent"
+            android:exported="false" />
         <activity
             android:name=".ContainerStudent"
             android:exported="false" />

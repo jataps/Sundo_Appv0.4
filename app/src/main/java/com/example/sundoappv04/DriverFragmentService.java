@@ -81,6 +81,8 @@ public class DriverFragmentService extends Fragment {
 
         onboardList = view.findViewById(R.id.onboardList);
 
+        addStudentBtn = view.findViewById(R.id.addStudentBtn);
+
         mRef = FirebaseDatabase.getInstance().getReference().child("USER_INFORMATION").child("STUDENT");
 
         onboardList.setHasFixedSize(true);
@@ -109,6 +111,15 @@ public class DriverFragmentService extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        addStudentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),DriverAddStudent.class);
+                intent.putExtra("fragment_to_display","fragment_service");
+                startActivity(intent);
             }
         });
 
