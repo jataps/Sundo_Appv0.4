@@ -39,7 +39,28 @@ public class ContainerDriver extends AppCompatActivity {
 
         setContentView(binding.getRoot());
 
-        replaceFragment(new DriverFragmentHome());
+        if (getIntent().hasExtra("fragment_to_display")) {
+            String fragmentToDisplay = getIntent().getStringExtra("fragment_to_display");
+
+            switch (fragmentToDisplay) {
+                case "fragment_profile":
+                    replaceFragment(new DriverFragmentProfile());
+                    break;
+
+                case "fragment_service":
+                    replaceFragment(new DriverFragmentService());
+                    break;
+
+                case "fragment_records":
+                    replaceFragment(new DriverFragmentRecords());
+                    break;
+
+                default:
+                    break;
+            }
+        } else {
+            replaceFragment(new DriverFragmentHome());
+        }
 
         binding.bottomNavigationViewDriver.setOnItemSelectedListener(item -> {
 
@@ -72,6 +93,21 @@ public class ContainerDriver extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout_driver, fragment);
         fragmentTransaction.commit();
+
+/*
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.container_fragment, new Fragment1(), "Fragment1");
+        fragmentTransaction.commit();
+
+        if (getIntent().hasExtra("fragment_to_display")) {
+            String fragmentToDisplay = getIntent().getStringExtra("fragment_to_display");
+            if (fragmentToDisplay.equals("fragment2")) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container_fragment, new Fragment2(), "Fragment2");
+                transaction.commit();
+            }
+        }
+*/
 
     }
 

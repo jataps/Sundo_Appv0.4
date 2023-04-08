@@ -25,7 +25,26 @@ public class ContainerStudent extends AppCompatActivity {
 
         binding = ActivityContainerStudentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new StudentFragmentHome());
+
+        if (getIntent().hasExtra("fragment_to_display")) {
+            String fragmentToDisplay = getIntent().getStringExtra("fragment_to_display");
+
+            switch (fragmentToDisplay) {
+                case "fragment_profile":
+                    replaceFragment(new StudentFragmentProfile());
+                    break;
+
+                case "fragment_records":
+                    replaceFragment(new StudentFragmentRecords());
+                    break;
+
+                default:
+                    break;
+            }
+        } else {
+            replaceFragment(new StudentFragmentHome());
+        }
+
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
