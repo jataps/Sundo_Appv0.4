@@ -305,9 +305,7 @@ public class FillUpForm extends AppCompatActivity {
                 map.put("emergencyName", emergencyName);
                 map.put("emergencyNumber", emergencyNumber);
 
-                map.put("address/longitude", false);
-                map.put("address/latitude", false);
-                map.put("address/completeAdd", completeAdd);
+                map.put("completeAdd", completeAdd);
 
                 if (userType.equals("DRIVER")) {
                     String plateNumber = String.valueOf(editTextPlateNumber.getText());

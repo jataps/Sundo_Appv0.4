@@ -20,18 +20,15 @@
             android:paddingBottom="20dp"
             android:text="Add Student"
             android:textSize="20dp" />
-        <ListView
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/onboardList"
-            android:layout_width="334dp"
-            android:layout_height="515dp"
             android:layout_below="@+id/serviceBtnDriver"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="38dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginBottom="89dp"
-            android:background="#F4F4F4" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:padding="20dp"
+            android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
 </FrameLayout>
