@@ -27,7 +27,7 @@ public class CustomStudentAdapter extends RecyclerView.Adapter<CustomStudentAdap
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_student, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_student_list, parent, false);
 
         return new MyViewHolder(view);
     }
@@ -37,9 +37,9 @@ public class CustomStudentAdapter extends RecyclerView.Adapter<CustomStudentAdap
 
         Student student = list.get(position);
 
-        holder.textFirstName.setText(student.getFirstName());
-        holder.textLastName.setText(student.getLastName());
-        holder.textEmail.setText(student.getCompleteAdd());
+        holder.textFN.setText(student.getFirstName());
+        holder.textLN.setText(student.getLastName());
+        holder.textMail.setText(student.getCompleteAdd());
 
     }
 
@@ -50,14 +50,14 @@ public class CustomStudentAdapter extends RecyclerView.Adapter<CustomStudentAdap
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textFirstName, textLastName, textEmail;
+        TextView textFN, textLN, textMail;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            textFirstName = itemView.findViewById(R.id.textFirstName);
-            textLastName = itemView.findViewById(R.id.textLastName);
-            textEmail = itemView.findViewById(R.id.textEmail);
+            textFN = itemView.findViewById(R.id.textFN);
+            textLN = itemView.findViewById(R.id.textLN);
+            textMail = itemView.findViewById(R.id.textMail);
 
         }
     }

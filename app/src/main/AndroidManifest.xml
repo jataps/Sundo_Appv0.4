@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SundoAppV04">
         <activity
+            android:name=".DriverAddStudent"
+            android:exported="false" />
+        <activity
             android:name=".DriverFragmentAddStudent"
             android:exported="false" />
         <activity
