@@ -5,12 +5,28 @@
     android:layout_height="match_parent"
     tools:context=".StudentFragmentHome">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="STUDENT HOME FRAGMENT"
-        android:textSize="20dp"
-        android:layout_gravity="bottom"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/mapTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STUDENT HOME FRAGMENT"
+            android:textSize="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"/>
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_below="@id/mapTitle"
+            android:apiKey="AIzaSyAqm04uBwJCxGsXU7oP0Y_DgpzYiLiOCXA"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
 
 </FrameLayout>

@@ -14,15 +14,12 @@ import java.util.ArrayList;
 public class CustomStudentAdapter extends RecyclerView.Adapter<CustomStudentAdapter.MyViewHolder> {
 
     Context context;
-
     ArrayList<Student> list;
 
     public CustomStudentAdapter(Context context, ArrayList<Student> list) {
         this.context = context;
         this.list = list;
     }
-
-
 
     @NonNull
     @Override
@@ -38,7 +35,6 @@ public class CustomStudentAdapter extends RecyclerView.Adapter<CustomStudentAdap
         Student student = list.get(position);
 
         holder.textFirstName.setText(student.getFirstName());
-        holder.textLastName.setText(student.getLastName());
         holder.textEmail.setText(student.getCompleteAdd());
 
     }
@@ -50,13 +46,12 @@ public class CustomStudentAdapter extends RecyclerView.Adapter<CustomStudentAdap
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textFirstName, textLastName, textEmail;
+        TextView textFirstName, textEmail;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textFirstName = itemView.findViewById(R.id.textFirstName);
-            textLastName = itemView.findViewById(R.id.textLastName);
             textEmail = itemView.findViewById(R.id.textEmail);
 
         }
